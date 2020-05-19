@@ -1,21 +1,55 @@
 import React from "react"
-import { Link } from "gatsby"
+import Layout from '../components/Layout';
+import ImagenHotel from '../components/ImagenHotel';
+import ContenidoInicio from '../components/ContenidoInicio';
+import useHabitaciones from '../hookxs/useHabitaciones';
+import {css} from '@emotion/core';
+import HabitacionPreview from '../components/HabitacionPreview';
+import styled from '@emotion/styled';
 
-import Layout from "../components/layout"
-import Image from "../components/image"
-import SEO from "../components/seo"
+const ListadoHabitaciones=styled.ul`
+  max-width:1200px;
+  width:90%;
+  margin:3rem auto 0 auto;
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
-)
+  @media(min-width:768px){
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    column-gap:2rem;
+  }
+`;
 
+
+const IndexPage = () => {
+  const habitaciones=useHabitaciones();
+  
+ console.log(habitaciones);
+
+  return (
+    <Layout>
+      <ImagenHotel/>
+  
+      <ContenidoInicio/>
+      
+      <h2
+      css={css`
+      text-align:center;
+      margin-top:5rem;
+      font-size:2rem;
+      `}
+      >Nuestras habitaciones</h2>
+
+      <ListadoHabitaciones>
+        {habitaciones.map(habitacion=>(
+        <HabitacionPreview
+          key={habitacion.id}
+          habitacion={habitacion}
+        />
+        ))}
+      </ListadoHabitaciones>
+  
+    </Layout>
+  )
+  
+}
 export default IndexPage
